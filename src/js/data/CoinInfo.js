@@ -1,6 +1,5 @@
 /* @flow */
 
-import { ERRORS } from '../constants';
 import { toHardened, fromHardened } from '../utils/pathUtils';
 import type { CoinInfo, BitcoinNetworkInfo, EthereumNetworkInfo, MiscNetworkInfo } from '../types';
 
@@ -108,53 +107,6 @@ export const fixCoinInfoNetwork = (ci: BitcoinNetworkInfo, path: number[]) => {
         coinInfo.segwit = false;
     }
     return coinInfo;
-};
-
-const detectBtcVersion = data => {
-    if (data.subversion == null) {
-        return 'btc';
-    }
-    if (data.subversion.startsWith('/Bitcoin ABC')) {
-        return 'bch';
-    }
-    if (data.subversion.startsWith('/Bitcoin Cash')) {
-        return 'bch';
-    }
-    if (data.subversion.startsWith('/Bitcoin Gold')) {
-        return 'btg';
-    }
-    return 'btc';
-};
-
-export const getCoinInfoByHash = (hash: string, networkInfo: any) => {
-    const networks = cloneCoinInfo(bitcoinNetworks);
-    const result = networks.find(
-        info => hash.toLowerCase() === info.hashGenesisBlock.toLowerCase(),
-    );
-    if (!result) {
-        throw ERRORS.TypedError(
-            'Method_UnknownCoin',
-            `Coin info not found for hash: ${hash} ${networkInfo.hashGenesisBlock}`,
-        );
-    }
-
-    if (result.isBitcoin) {
-        const btcVersion = detectBtcVersion(networkInfo);
-        let fork: ?BitcoinNetworkInfo;
-        if (btcVersion === 'bch') {
-            fork = networks.find(info => info.name === 'Bcash');
-        } else if (btcVersion === 'btg') {
-            fork = networks.find(info => info.name === 'Bgold');
-        }
-        if (fork) {
-            return fork;
-        }
-        throw ERRORS.TypedError(
-            'Method_UnknownCoin',
-            `Coin info not found for hash: ${hash} ${networkInfo.hashGenesisBlock} BTC version:${btcVersion}`,
-        );
-    }
-    return result;
 };
 
 export const getCoinInfo = (currency: string): ?CoinInfo =>

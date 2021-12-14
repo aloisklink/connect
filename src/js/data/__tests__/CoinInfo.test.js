@@ -1,9 +1,5 @@
 import coinsJSON from '../../../data/coins.json';
-import {
-    parseCoinsJson,
-    getCoinInfo,
-    getUniqueNetworks,
-} from '../CoinInfo';
+import { parseCoinsJson, getCoinInfo, getUniqueNetworks } from '../CoinInfo';
 
 describe('data/CoinInfo', () => {
     beforeAll(() => {
