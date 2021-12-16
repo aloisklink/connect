@@ -1,3 +1,4 @@
+import { TextEncoder } from 'util';
 import { TX_CACHE } from './__txcache__';
 import { WS_CACHE } from './__wscache__';
 import { MockedWorker } from './__wscache__/worker';
@@ -17,3 +18,7 @@ global.TestUtils = {
     TX_CACHE,
     WS_CACHE,
 };
+
+// TextEncoder is global in Node v11 and browsers but not currently in jsdom https://github.com/jsdom/jsdom/issues/2524
+// TODO: Remove when supported by jsdom/jest https://github.com/facebook/jest/issues/9983
+global.TextEncoder = TextEncoder;
