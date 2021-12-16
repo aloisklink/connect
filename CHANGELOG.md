@@ -1,5 +1,9 @@
 # 8.2.4 (not released)
 
+### Added
+
+- Ethereum: Support for EthereumSignTypedData operation
+
 # 8.2.3
 
 ### Added
