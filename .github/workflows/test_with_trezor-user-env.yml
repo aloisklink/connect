@@ -1,0 +1,28 @@
+name: Test with trezor-user-env
+on:
+  workflow_call:
+    inputs:
+      methods:
+        name: "List of methods to include in tests (example applySettings,applyFlags,getFeatures)"
+        type: "string"
+        required: false
+      test-pattern:
+        name: "Test pattern to use (e.g. `init` or `methods`)"
+        type: "string"
+        required: true
+
+jobs:
+  test-methods-nodejs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: yarn
+        cache-dependency-path: "**/yarn.lock"
+    - run: yarn install
+    - run: ./tests/run.sh -s 'yarn test:integration ${{ inputs.test-pattern }}' -i '${{ inputs.methods }}'
