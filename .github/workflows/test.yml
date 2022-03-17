@@ -55,6 +55,14 @@ jobs:
         if-no-files-found: error
         retention-days: 1
 
+  api:
+    needs: [build, check]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: ./.github/workflows/test_methods_with_trezor-user-env
+      with:
+        test-pattern: init
+
   management:
     needs: [build, check]
     runs-on: ubuntu-latest
