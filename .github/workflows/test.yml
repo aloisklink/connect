@@ -1,7 +1,9 @@
 name: Test
 on:
   push:
-    branches: [develop]
+    branches:
+    - develop
+    - "*" # for testing only, DO NOT MERGE
   pull_request:
     branches: [develop]
 
